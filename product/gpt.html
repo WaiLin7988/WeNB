@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WeNB — Product</title>
+  <meta name="description" content="WeNB (We Need Banana) — A fresh, motion‑rich product page for steamed milk banana. New layouts & transitions. Same theme, same nav & footer." />
+
+  <!-- Fonts -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=open-sauce@300,400,500,600,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* Theme (keep same) */
+      --banana:#FFD11A; --green:#00512A; --brown:#3A2E1F; --cream:#FFFBEA;
+      --pastel:#A3C585; --beige:#EAD7B7; --gray:#F5F5F5; --clay:#C75C5C; --text:#1f1f1f;
+      --radius-2xl: 1.5rem; --radius-xl:1.25rem; --radius-lg:1rem; --radius-md:.75rem;
+      --shadow-xs:0 6px 14px rgba(0,0,0,.06); --shadow-sm:0 10px 24px rgba(0,0,0,.08); --shadow-md:0 16px 36px rgba(0,0,0,.12);
+      --content-max:1100px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:"Open Sauce",system-ui,-apple-system,Segoe UI,Roboto,"Open Sans",Arial,sans-serif;color:var(--text);background:var(--cream);line-height:1.65}
+    img{max-width:100%;height:auto;display:block}
+    a{text-decoration:none;color:inherit}
+    h1,h2,h3,.brand{font-family:"Prata",serif;letter-spacing:.2px}
+    .container{width:min(92%,var(--content-max));margin-inline:auto}
+
+    /* Buttons */
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 1.15rem;border-radius:999px;font-weight:600;transition:transform .25s ease,box-shadow .25s ease,background-color .25s ease}
+    .btn-primary{background:var(--green);color:#fff;box-shadow:var(--shadow-xs)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+    .btn-accent{background:var(--banana);color:#1a1a1a}
+    .btn-accent:hover{transform:translateY(-2px)}
+    .btn-ghost{background:#00000008;border:1px solid #00000014}
+    .chip{padding:.35rem .7rem;border-radius:999px;font-size:.85rem;font-weight:700}
+    .chip-green{background:#E6F3EA;color:var(--green)}
+    .chip-yellow{background:var(--banana)}
+
+    /* Keep SAME nav + footer style */
+    header{position:sticky;top:0;z-index:40;backdrop-filter:saturate(180%) blur(10px);background:color-mix(in oklab,var(--cream) 80%,white 20%);border-bottom:1px solid #00000010}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.35rem 0}
+    .brand{display:inline-flex;align-items:center;gap:.6rem;font-size:1.2rem}
+    .brand .logo{width:140px;height:auto;object-fit:contain;border-radius:8px}
+    .nav-links{display:flex;align-items:center;gap:1rem}
+    .nav-links a{padding:.4rem .8rem;border-radius:.65rem}
+    .nav-links a:hover{background:#00000008}
+    .menu-btn{display:none;border:0;background:transparent;cursor:pointer;padding:.5rem;border-radius:.6rem}
+    @media(max-width:820px){.menu-btn{display:inline-flex}.nav-links{display:none;position:absolute;top:64px;left:0;right:0;padding:.75rem;background:var(--cream);border-bottom:1px solid #00000010}.nav-links.open{display:grid;gap:.25rem}}
+
+    footer{background:#fff;border-top:1px solid #00000010;margin-top:2rem}
+    .footer-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:1.5rem;padding:2rem 0}
+    .footer-col h4{margin:0 0 .6rem}
+    .footer-col a{display:inline-block;padding:.25rem 0;color:#1d1d1d;opacity:.9}
+    .copyright{border-top:1px dashed #00000014;padding:1rem 0;font-size:.9rem;color:#444;display:flex;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
+    .heart{color:var(--clay)}
+    @media(max-width:860px){.footer-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.footer-grid{grid-template-columns:1fr}}
+
+    /* === NEW DESIGN & TRANSITIONS === */
+    /* Hero: rising steam orbs + mask headline */
+    .hero{position:relative;isolation:isolate;background:#fff;padding:4.5rem 0 2rem;overflow:hidden}
+    .steam{position:absolute;inset:auto -10vw -40px -10vw;height:160px;pointer-events:none;filter:blur(18px);opacity:.5}
+    .steam > span{position:absolute;bottom:-40px;left:var(--x);width:var(--s);height:var(--s);background:radial-gradient(circle at 60% 40%, #ffffff 0 40%, #fff6 60% 100%);border-radius:999px;animation:rise var(--t) ease-in infinite;animation-delay:var(--d)}
+    @keyframes rise{from{transform:translateY(0) scale(.9);opacity:.5}to{transform:translateY(-180px) scale(1.2);opacity:0}}
+
+    .headline{font-size:clamp(2.2rem,3.6vw + 1rem,3.6rem);margin:0 0 .5rem;color:var(--green);text-align:center}
+    .sub{max-width:62ch;margin:0 auto 1rem;text-align:center;font-size:clamp(1.02rem,1.1vw + .7rem,1.25rem)}
+
+    /* Split sticky scrolly: right image sticks, left panels step in */
+    .scrolly{background:linear-gradient(180deg,#fff, var(--cream));padding:2.5rem 0}
+    .scrolly-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:1.2rem;align-items:start}
+    .sticky-visual{position:sticky;top:84px;border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-md);transform:translateZ(0)}
+    .sticky-visual img{width:100%;height:min(70vh,720px);object-fit:cover}
+    .steps{display:grid;gap:1rem}
+    .step{background:#fff;border:1px solid #00000014;border-radius:var(--radius-xl);padding:1.2rem 1.25rem;box-shadow:var(--shadow-xs);transform-origin:top left;opacity:.65;transform:scale(.985);transition:opacity .35s ease, transform .35s ease}
+    .step.active{opacity:1;transform:scale(1)}
+    .step h3{margin:.2rem 0;color:var(--green)}
+    @media(max-width:980px){.scrolly-grid{grid-template-columns:1fr}.sticky-visual{order:-1}}
+
+    /* INGREDIENTS STRIP — NEW look (pebble pills, float) */
+    .ingredients{background:linear-gradient(180deg,var(--gray),#fff);padding:3rem 0;border-block:1px solid #00000010}
+    .ing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .ing{background:#fff;border-radius:2rem;padding:1rem 1.25rem;border:1px solid #00000012;box-shadow:var(--shadow-xs);display:flex;align-items:center;gap:.9rem;transform:translateY(0);transition:transform .35s ease, box-shadow .35s ease}
+    .ing:hover{transform:translateY(-4px);box-shadow:var(--shadow-sm)}
+    .ing img{width:52px;height:52px;border-radius:999px;background:var(--cream);padding:.4rem}
+    .ing b{display:block}
+    .ing small{opacity:.75}
+    @media(max-width:760px){.ing-grid{grid-template-columns:1fr}}
+
+    /* TASTE SPECTRUM — interactive range controls visuals */
+    .spectrum{background:#fff}
+    .spec-wrap{display:grid;grid-template-columns:1fr .9fr;gap:1.2rem;align-items:center}
+    .dial{background:conic-gradient(from 180deg at 50% 50%, #fff 0 25%, #fff7 0 100%),linear-gradient(180deg,var(--beige),#fff);border:1px solid #00000010;border-radius:var(--radius-2xl);padding:1.2rem;box-shadow:var(--shadow-xs)}
+    .meter{height:14px;border-radius:999px;background:#0000000e;position:relative;overflow:hidden}
+    .meter > i{position:absolute;inset:0;width:var(--fill,40%);background:linear-gradient(90deg,var(--banana), #ffe178);border-radius:999px;transition:width .3s ease}
+    .knob{width:100%}
+    @media(max-width:920px){.spec-wrap{grid-template-columns:1fr}}
+
+    /* NUMBERS / PILLARS — circular counters */
+    .numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .num{background:#fff;border:1px solid #00000012;border-radius:var(--radius-2xl);padding:1.6rem;text-align:center;box-shadow:var(--shadow-xs)}
+    .num .ring{width:92px;height:92px;margin:0 auto 8px;border-radius:50%;background:conic-gradient(var(--green) var(--deg,0deg), #eaeaea 0);display:grid;place-items:center;transition:--deg .6s ease}
+    .num .ring span{background:#fff;border:1px solid #00000014;border-radius:50%;padding:.6rem 1rem;font-weight:800}
+    .num p{margin:.25rem 0 0;opacity:.8}
+    @media(max-width:820px){.numbers{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.numbers{grid-template-columns:1fr}}
+
+    /* Bento mosaic — brand new layout */
+    .bento{display:grid;grid-template-columns:2fr 1.2fr;gap:1rem}
+    .tile{position:relative;border-radius:var(--radius-xl);overflow:hidden;border:1px solid #00000012;box-shadow:var(--shadow-xs);background:#fff}
+    .tile figure{aspect-ratio:4/3}
+    .tile img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+    .tile:hover img{transform:scale(1.06)}
+    .tile .label{position:absolute;inset:auto 10px 10px auto;background:#ffffffee;border-radius:999px;padding:.45rem .8rem;font-weight:700;border:1px solid #00000012}
+    .tile.small{grid-row:span 1}
+    .tile.tall figure{aspect-ratio:3/4}
+    @media(max-width:960px){.bento{grid-template-columns:1fr}}
+
+    /* Horizontal stepper with snap */
+    .stepper{background:linear-gradient(180deg,#fff,var(--cream));border-top:1px solid #00000010;border-bottom:1px solid #00000010}
+    .rail{display:grid;grid-auto-flow:column;grid-auto-columns:80%;gap:1rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:1rem 0}
+    .card{scroll-snap-align:start;background:#fff;border:1px solid #00000012;border-radius:var(--radius-xl);padding:1.25rem;box-shadow:var(--shadow-xs)}
+    @media(min-width:900px){.rail{grid-auto-columns:33%}}
+
+    /* CTA */
+    .cta{background:linear-gradient(180deg,var(--gray),#fff);border:1px solid #00000010;border-radius:var(--radius-2xl);padding:2rem;text-align:center;box-shadow:var(--shadow-xs)}
+
+    /* Reveal */
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease, transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion:reduce){
+      .reveal{transition:none}
+      .tile img,.ing,.step{transition:none}
+      .steam{display:none}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Nav (same version) -->
+  <header>
+    <div class="container nav" role="navigation" aria-label="Main Navigation">
+      <a href="/" class="brand" aria-label="WeNB Home"><img class="logo" src="/images/logo.svg" alt="WeNB logo" /></a>
+      <button class="menu-btn" aria-label="Toggle Menu" aria-expanded="false" id="menuBtn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+      </button>
+      <nav class="nav-links" id="navLinks">
+        <a href="/">Home</a>
+        <a href="/about-us/">Story</a>
+        <a href="/product/" style="background:#0000000a">Product</a>
+        <a href="/contact-us/">Contact</a>
+        <a class="btn btn-accent" href="/contact-us/">Try WeNB</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO: entirely new look -->
+    <section class="hero">
+      <div class="container">
+        <h1 class="headline reveal">Steamed Milk Banana — reimagined for campus life</h1>
+        <p class="sub reveal">Warm. Simple. Shareable. A bowl that brings Myanmar’s comfort to Bangkok’s study nights.</p>
+        <div class="reveal" style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-top:.8rem">
+          <a class="btn btn-primary" href="#ingredients">See what's inside</a>
+          <a class="btn btn-ghost" href="#numbers">Why students love it</a>
+        </div>
+      </div>
+      <!-- rising steam blobs -->
+      <div class="steam" aria-hidden="true">
+        <span style="--x:5%; --s:68px; --t:5.5s; --d:.2s"></span>
+        <span style="--x:18%; --s:48px; --t:5s; --d:.8s"></span>
+        <span style="--x:36%; --s:74px; --t:6s; --d:.1s"></span>
+        <span style="--x:55%; --s:52px; --t:5.4s; --d:.6s"></span>
+        <span style="--x:72%; --s:62px; --t:6.2s; --d:.3s"></span>
+        <span style="--x:88%; --s:46px; --t:5.1s; --d:.7s"></span>
+      </div>
+    </section>
+
+    <!-- NEW sticky scrolly section -->
+    <section class="scrolly" aria-label="Why it works">
+      <div class="container scrolly-grid">
+        <div class="steps">
+          <article class="step reveal active"><h3>Comfort, not complexity</h3><p>Steamed slowly for soft texture and calm sweetness — the kind that settles you after a long day.</p></article>
+          <article class="step reveal"><h3>Simple ingredients</h3><p>Banana. Milk. Coconut if you want. Nothing to hide, everything to feel.</p></article>
+          <article class="step reveal"><h3>Made to share</h3><p>Designed for friends: small bowls for a quick boost, or a sharing bowl for the dorm.</p></article>
+        </div>
+        <div class="sticky-visual">
+          <img id="scrollyImg" src="/images/product-closeup.png" alt="Close up of WeNB texture" loading="eager">
+        </div>
+      </div>
+    </section>
+
+    <!-- INGREDIENTS STRIP (new visual) -->
+    <section id="ingredients" class="ingredients" aria-label="Ingredients">
+      <div class="container">
+        <h2 class="reveal" style="margin:0 0 .6rem;color:var(--green)">What's inside</h2>
+        <p class="reveal" style="margin:.2rem 0 1.2rem;max-width:60ch">Minimal ingredients so the flavor — and the feelings — stay true.</p>
+        <div class="ing-grid">
+          <div class="ing reveal"><img src="/images/ing-banana.png" alt="Banana icon"><div><b>Banana</b><small>Ripe & naturally sweet</small></div></div>
+          <div class="ing reveal"><img src="/images/ing-milk.png" alt="Milk icon"><div><b>Milk</b><small>Creamy & gentle</small></div></div>
+          <div class="ing reveal"><img src="/images/ing-coconut.png" alt="Coconut icon"><div><b>Coconut (optional)</b><small>Fresh shreds on top</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TASTE SPECTRUM (interactive but lightweight) -->
+    <section class="spectrum" aria-label="Taste spectrum">
+      <div class="container spec-wrap">
+        <div class="dial reveal">
+          <h2 style="margin:.2rem 0 .5rem;color:var(--green)">Tune your comfort</h2>
+          <p style="margin-top:0">Slide to preview the mood. Sweetness and creaminess adjust visually — the dessert stays simple.</p>
+          <div style="display:grid;gap:.75rem;margin-top:.8rem">
+            <label>SWEETNESS</label>
+            <div class="meter"><i id="mSweet" style="width:40%"></i></div>
+            <input id="rSweet" class="knob" type="range" min="0" max="100" value="40" />
+
+            <label>CREAMINESS</label>
+            <div class="meter"><i id="mCream" style="width:55%"></i></div>
+            <input id="rCream" class="knob" type="range" min="0" max="100" value="55" />
+          </div>
+        </div>
+        <figure class="reveal" style="margin:0;border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-md);border:1px solid #00000012">
+          <img id="specImg" src="/images/shot-3.jpeg" alt="WeNB plated" loading="lazy" style="filter:saturate(1) brightness(1)">
+        </figure>
+      </div>
+    </section>
+
+    <!-- NUMBERS / PILLARS (new counters) -->
+    <section id="numbers" aria-label="Numbers that matter">
+      <div class="container numbers">
+        <div class="num reveal" data-target="3">
+          <div class="ring" style="--deg:0deg"><span id="c1">0</span></div>
+          <p>ingredients — nothing else</p>
+        </div>
+        <div class="num reveal" data-target="10">
+          <div class="ring" style="--deg:0deg"><span id="c2">0</span></div>
+          <p>minutes to warm smiles</p>
+        </div>
+        <div class="num reveal" data-target="100">
+          <div class="ring" style="--deg:0deg"><span id="c3">0%</span></div>
+          <p>student‑made with care</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRAND‑NEW BENTO MOSAIC (servings / vibes) -->
+    <section aria-label="Serving ideas">
+      <div class="container">
+        <h2 class="reveal" style="margin-top:0;color:var(--green)">Choose your vibe</h2>
+        <div class="bento">
+          <article class="tile tall reveal"><figure><img src="/images/variant-sharing.jpeg" alt="Sharing bowl"></figure><span class="label">Dorm Night</span></article>
+          <article class="tile small reveal"><figure><img src="/images/variant-classic.jpeg" alt="Classic"></figure><span class="label">Classic</span></article>
+          <article class="tile small reveal"><figure><img src="/images/variant-coconut.jpeg" alt="With coconut"></figure><span class="label">With Coconut</span></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HORIZONTAL STEPPER (how to enjoy) -->
+    <section class="stepper" aria-label="How to enjoy">
+      <div class="container">
+        <h2 class="reveal" style="margin-top:0;color:var(--green)">How to enjoy</h2>
+        <div class="rail">
+          <article class="card reveal"><h3>1) Warm & Soft</h3><p>Heat gently until the banana is tender. Warmth is the magic.</p></article>
+          <article class="card reveal"><h3>2) Top It</h3><p>Keep it pure, or add fresh coconut shreds for nostalgia.</p></article>
+          <article class="card reveal"><h3>3) Share</h3><p>Grab friends and a table. The stories do the rest.</p></article>
+        </div>
+        <div class="reveal" style="text-align:center;margin-top:.5rem"><a class="btn btn-primary" href="/contact-us/">Bring WeNB to campus</a></div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section aria-label="Call to action">
+      <div class="container">
+        <div class="cta reveal">
+          <h2 style="margin:.2rem 0 .5rem">Taste the story</h2>
+          <p style="margin:.2rem 0 1rem">WeNB is a small moment of home for Burmese students — and a warm invite to Thai & international friends.</p>
+          <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+            <a class="btn btn-accent" href="/contact-us/">Contact to Try</a>
+            <a class="btn btn-ghost" href="/about-us/">Our Journey</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer (same version) -->
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-col"><div class="brand" style="margin-bottom:.35rem"><img class="logo" src="/images/logo.svg" alt="WeNB logo" /></div><p style="margin:.25rem 0 1rem;max-width:38ch">We Need Banana — Burmese steamed milk banana for students in Bangkok. Comfort. Culture. Community.</p></div>
+      <div class="footer-col"><h4>Explore</h4><a href="/">Home</a><br/><a href="/about-us/">Story</a><br/><a href="/product/">Product</a><br/><a href="/contact-us/">Contact</a></div>
+    </div>
+    <div class="container copyright"><span>© <span id="year"></span> WeNB — All rights reserved.</span><span>Made with <span class="heart">♥</span> for the Myanmar community in Bangkok.</span></div>
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile nav toggle (same)
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn?.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})
+    },{threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Sticky scrolly image swap when steps come into view
+    const steps = document.querySelectorAll('.step');
+    const scrollyImg = document.getElementById('scrollyImg');
+    const imgs = ['/images/product-closeup.png','/images/shot-2.jpeg','/images/variant-sharing.jpeg'];
+    steps.forEach((step,i)=>{
+      const obs = new IntersectionObserver(es=>{
+        es.forEach(x=>{ if(x.isIntersecting){
+          steps.forEach(s=>s.classList.remove('active')); step.classList.add('active');
+          scrollyImg.src = imgs[i] || imgs[0];
+        }});
+      },{threshold:0.6, rootMargin:'-10% 0px -40% 0px'});
+      obs.observe(step);
+    });
+
+    // Taste spectrum sliders
+    const rSweet=document.getElementById('rSweet');
+    const rCream=document.getElementById('rCream');
+    const mSweet=document.getElementById('mSweet');
+    const mCream=document.getElementById('mCream');
+    const specImg=document.getElementById('specImg');
+    function updateSpec(){
+      mSweet.style.width=rSweet.value+'%';
+      mCream.style.width=rCream.value+'%';
+      const sat = 0.9 + (rSweet.value/100)*0.3; // 0.9–1.2
+      const bright = 0.95 + (rCream.value/100)*0.15; // 0.95–1.1
+      specImg.style.filter = `saturate(${sat}) brightness(${bright})`;
+    }
+    rSweet.addEventListener('input', updateSpec);
+    rCream.addEventListener('input', updateSpec);
+
+    // Numbers counters with rings
+    const nums = document.querySelectorAll('.num');
+    nums.forEach((box,idx)=>{
+      const target = parseInt(box.dataset.target,10);
+      const span = box.querySelector('span');
+      const ring = box.querySelector('.ring');
+      const obs = new IntersectionObserver(es=>{
+        es.forEach(e=>{if(e.isIntersecting){
+          let cur=0; const end=target; const isPct = span.textContent.includes('%');
+          const step = () => {cur += Math.max(1, Math.round(end/40)); if(cur>end) cur=end; span.textContent = isPct? cur+'%': cur; const deg = (cur/end)*300; ring.style.setProperty('--deg', deg+'deg'); if(cur<end) requestAnimationFrame(step);} ;
+          requestAnimationFrame(step);
+          obs.disconnect();
+        }});
+      },{threshold:0.7});
+      obs.observe(box);
+    });
+  </script>
+</body>
+</html>
