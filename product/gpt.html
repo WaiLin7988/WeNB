@@ -20,6 +20,35 @@
       --shadow-xs:0 6px 14px rgba(0,0,0,.06); --shadow-sm:0 10px 24px rgba(0,0,0,.08); --shadow-md:0 16px 36px rgba(0,0,0,.12);
       --content-max:1100px;
     }
+
+    /* Hero typography */
+.hero { padding: 5.5rem 0 2rem; background:#fff; }
+.eyebrow { font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.8rem; opacity:.65; ; }
+.headline { font-size:clamp(2.4rem, 5vw + .5rem, 4.2rem); line-height:1.08; margin:.35rem 0; color:var(--green); }
+.subhead { font-size:clamp(1.05rem, 1.2vw + .7rem, 1.35rem); opacity:.88; max-width:60ch; margin-inline:auto; }
+
+/* Sticky popup CTA */
+.sticky-cta {
+  position:fixed;
+  inset:auto 0 14px 0;
+  display:flex;
+  justify-content:center;
+  pointer-events:none;
+  z-index:35;
+}
+.sticky-cta .bar {
+  pointer-events:auto;
+  background:#111;
+  color:#fff;
+  border-radius:999px;
+  padding:.5rem .8rem;
+  display:flex;
+  gap:.5rem;
+  align-items:center;
+  box-shadow:0 14px 40px rgba(0,0,0,.22);
+}
+.sticky-cta .bar .btn { padding:.6rem 1rem; }
+
     *,*::before,*::after{box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{margin:0;font-family:"Open Sauce",system-ui,-apple-system,Segoe UI,Roboto,"Open Sans",Arial,sans-serif;color:var(--text);background:var(--cream);line-height:1.65}
@@ -125,8 +154,25 @@
     .card{scroll-snap-align:start;background:#fff;border:1px solid #00000012;border-radius:var(--radius-xl);padding:1.25rem;box-shadow:var(--shadow-xs)}
     @media(min-width:900px){.rail{grid-auto-columns:33%}}
 
-    /* CTA */
-    .cta{background:linear-gradient(180deg,var(--gray),#fff);border:1px solid #00000010;border-radius:var(--radius-2xl);padding:2rem;text-align:center;box-shadow:var(--shadow-xs)}
+          /* Call to Action Section */
+      .cta-section {
+        background: var(--banana);
+        color: var(--brown);
+        text-align: center;
+        padding: 3rem 0;
+      }
+      .cta-section h2 {
+        font-size: clamp(2rem, 3.5vw + 1rem, 3.2rem);
+        margin-bottom: 1.5rem;
+      }
+      .cta-section .btn {
+        background: var(--brown);
+        color: #fff;
+      }
+      .cta-section .btn:hover {
+        background: var(--green);
+      }
+
 
     /* Reveal */
     .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease, transform .7s ease}
@@ -158,27 +204,32 @@
     </div>
   </header>
 
+  
+  <div class="sticky-cta" id="stickyBar" style="opacity:0;transform:translateY(10px);transition:all .4s ease">
+  <div class="bar">
+    <span class="chip chip-yellow" aria-hidden="true">WeNB</span>
+    <span style="font-weight:700">Steamed Milk Banana</span>
+    <a class="btn btn-primary" href="#enjoy">How to Enjoy</a>
+    <a class="btn btn-accent" href="/contact-us/">Contact to Try</a>
+  </div>
+</div>
+
+
   <main>
     <!-- HERO: entirely new look -->
-    <section class="hero">
-      <div class="container">
-        <h1 class="headline reveal">Steamed Milk Banana — reimagined for campus life</h1>
-        <p class="sub reveal">Warm. Simple. Shareable. A bowl that brings Myanmar’s comfort to Bangkok’s study nights.</p>
-        <div class="reveal" style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;margin-top:.8rem">
-          <a class="btn btn-primary" href="#ingredients">See what's inside</a>
-          <a class="btn btn-ghost" href="#numbers">Why students love it</a>
-        </div>
-      </div>
-      <!-- rising steam blobs -->
-      <div class="steam" aria-hidden="true">
-        <span style="--x:5%; --s:68px; --t:5.5s; --d:.2s"></span>
-        <span style="--x:18%; --s:48px; --t:5s; --d:.8s"></span>
-        <span style="--x:36%; --s:74px; --t:6s; --d:.1s"></span>
-        <span style="--x:55%; --s:52px; --t:5.4s; --d:.6s"></span>
-        <span style="--x:72%; --s:62px; --t:6.2s; --d:.3s"></span>
-        <span style="--x:88%; --s:46px; --t:5.1s; --d:.7s"></span>
-      </div>
-    </section>
+    <section class="hero center">
+  <div class="container">
+    <div class="eyebrow reveal">Authentic Burmese Dessert</div>
+    <h1 class="headline reveal">Steamed Milk Banana</h1>
+    <p class="subhead reveal">
+      Minimal ingredients. Maximum comfort. Crafted by students in Bangkok to bring a warm bite of home — and invite friends to discover Burmese culture.
+    </p>
+    <div class="reveal" style="margin-top:1.1rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
+      <a class="btn btn-primary" href="#features">Explore</a>
+      <a class="btn btn-ghost" href="/about-us/">Read the Story</a>
+    </div>
+  </div>
+</section>
 
     <!-- NEW sticky scrolly section -->
     <section class="scrolly" aria-label="Why it works">
@@ -207,58 +258,6 @@
       </div>
     </section>
 
-    <!-- TASTE SPECTRUM (interactive but lightweight) -->
-    <section class="spectrum" aria-label="Taste spectrum">
-      <div class="container spec-wrap">
-        <div class="dial reveal">
-          <h2 style="margin:.2rem 0 .5rem;color:var(--green)">Tune your comfort</h2>
-          <p style="margin-top:0">Slide to preview the mood. Sweetness and creaminess adjust visually — the dessert stays simple.</p>
-          <div style="display:grid;gap:.75rem;margin-top:.8rem">
-            <label>SWEETNESS</label>
-            <div class="meter"><i id="mSweet" style="width:40%"></i></div>
-            <input id="rSweet" class="knob" type="range" min="0" max="100" value="40" />
-
-            <label>CREAMINESS</label>
-            <div class="meter"><i id="mCream" style="width:55%"></i></div>
-            <input id="rCream" class="knob" type="range" min="0" max="100" value="55" />
-          </div>
-        </div>
-        <figure class="reveal" style="margin:0;border-radius:var(--radius-2xl);overflow:hidden;box-shadow:var(--shadow-md);border:1px solid #00000012">
-          <img id="specImg" src="/images/shot-3.jpeg" alt="WeNB plated" loading="lazy" style="filter:saturate(1) brightness(1)">
-        </figure>
-      </div>
-    </section>
-
-    <!-- NUMBERS / PILLARS (new counters) -->
-    <section id="numbers" aria-label="Numbers that matter">
-      <div class="container numbers">
-        <div class="num reveal" data-target="3">
-          <div class="ring" style="--deg:0deg"><span id="c1">0</span></div>
-          <p>ingredients — nothing else</p>
-        </div>
-        <div class="num reveal" data-target="10">
-          <div class="ring" style="--deg:0deg"><span id="c2">0</span></div>
-          <p>minutes to warm smiles</p>
-        </div>
-        <div class="num reveal" data-target="100">
-          <div class="ring" style="--deg:0deg"><span id="c3">0%</span></div>
-          <p>student‑made with care</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- BRAND‑NEW BENTO MOSAIC (servings / vibes) -->
-    <section aria-label="Serving ideas">
-      <div class="container">
-        <h2 class="reveal" style="margin-top:0;color:var(--green)">Choose your vibe</h2>
-        <div class="bento">
-          <article class="tile tall reveal"><figure><img src="/images/variant-sharing.jpeg" alt="Sharing bowl"></figure><span class="label">Dorm Night</span></article>
-          <article class="tile small reveal"><figure><img src="/images/variant-classic.jpeg" alt="Classic"></figure><span class="label">Classic</span></article>
-          <article class="tile small reveal"><figure><img src="/images/variant-coconut.jpeg" alt="With coconut"></figure><span class="label">With Coconut</span></article>
-        </div>
-      </div>
-    </section>
-
     <!-- HORIZONTAL STEPPER (how to enjoy) -->
     <section class="stepper" aria-label="How to enjoy">
       <div class="container">
@@ -268,23 +267,16 @@
           <article class="card reveal"><h3>2) Top It</h3><p>Keep it pure, or add fresh coconut shreds for nostalgia.</p></article>
           <article class="card reveal"><h3>3) Share</h3><p>Grab friends and a table. The stories do the rest.</p></article>
         </div>
-        <div class="reveal" style="text-align:center;margin-top:.5rem"><a class="btn btn-primary" href="/contact-us/">Bring WeNB to campus</a></div>
       </div>
     </section>
 
-    <!-- CTA -->
-    <section aria-label="Call to action">
+    <section class="product-section cta-section">
       <div class="container">
-        <div class="cta reveal">
-          <h2 style="margin:.2rem 0 .5rem">Taste the story</h2>
-          <p style="margin:.2rem 0 1rem">WeNB is a small moment of home for Burmese students — and a warm invite to Thai & international friends.</p>
-          <div style="display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
-            <a class="btn btn-accent" href="/contact-us/">Contact to Try</a>
-            <a class="btn btn-ghost" href="/about-us/">Our Journey</a>
-          </div>
-        </div>
+        <h2 class="prata-font">Ready for a Taste of Home?</h2>
+        <a href="/contact-us/" class="btn btn-primary">A Bite of Home Awaits</a>
       </div>
     </section>
+
   </main>
 
   <!-- Footer (same version) -->
@@ -317,7 +309,7 @@
     // Sticky scrolly image swap when steps come into view
     const steps = document.querySelectorAll('.step');
     const scrollyImg = document.getElementById('scrollyImg');
-    const imgs = ['/images/product-closeup.png','/images/shot-2.jpeg','/images/variant-sharing.jpeg'];
+    const imgs = ['/images/product-closeup.png'];
     steps.forEach((step,i)=>{
       const obs = new IntersectionObserver(es=>{
         es.forEach(x=>{ if(x.isIntersecting){
@@ -360,6 +352,25 @@
       },{threshold:0.7});
       obs.observe(box);
     });
+
+      // Sticky CTA show/hide on scroll
+      const stickyBar = document.getElementById('stickyBar');
+      let shown = false;
+      const onScroll = () => {
+        const scrolled = window.scrollY;
+        if (scrolled > window.innerHeight * .7 && !shown) {
+          stickyBar.style.opacity = 1;
+          stickyBar.style.transform = 'translateY(0)';
+          shown = true;
+        }
+        if (scrolled < window.innerHeight * .5 && shown) {
+          stickyBar.style.opacity = 0;
+          stickyBar.style.transform = 'translateY(10px)';
+          shown = false;
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive:true });
+
   </script>
 </body>
 </html>
