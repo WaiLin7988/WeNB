@@ -16,6 +16,23 @@
   gtag('config', 'G-ZQWGCMF8G2');
 </script>
 
+<script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"WeNB",
+    "url":"https://wenb.shop/",
+    "logo":"https://wenb.shop/images/logo.svg",
+    "sameAs":[
+      "https://www.facebook.com/wenb.official",
+      "https://www.tiktok.com/@wenb.official"
+    ],
+    "email":"wenb.official@gmail.com",
+    "telephone":"+66948820729"
+  }
+  </script>
+
+
   <!-- Fonts: Prata (heads) + Open Sauce (body)  -->
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
@@ -269,7 +286,20 @@
           </div>
         </div>
         <div class="hero-media reveal" aria-label="Product preview">
-          <img src="/images/hero-wenb.png" alt="WeNB steamed milk banana served warm on a minimal plate" loading="eager" />
+          <picture>
+            <source type="image/webp"
+                    srcset="/images/hero-wenb-480.webp 480w,
+                            /images/hero-wenb-760.webp 760w,
+                            /images/hero-wenb-1100.webp 1100w"
+                    sizes="(max-width: 980px) 92vw, 50vw">
+            <img src="/images/hero-wenb.png"
+                width="1100" height="620"
+                alt="WeNB steamed milk banana served warm on a minimal plate"
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+                style="width:100%;height:auto;">
+          </picture>
         </div>
       </div>
     </section>
@@ -294,7 +324,17 @@
       <div class="container">
         <div class="card reveal product-strip">
           <figure class="hero-media" style="margin:0;">
-            <img src="/images/product-closeup.png" alt="Close-up of WeNB steamed milk banana texture" loading="lazy" />
+            <picture>
+              <source type="image/webp"
+                      srcset="/images/product-closeup-360.webp 360w,
+                              /images/product-closeup-720.webp 720w"
+                      sizes="(max-width: 640px) 92vw, 360px">
+              <img src="/images/product-closeup.png"
+                  width="720" height="504"
+                  alt="Close-up of WeNB steamed milk banana texture"
+                  loading="lazy" decoding="async"
+                  style="width:100%;height:auto;">
+            </picture>
           </figure>
           <div>
             <h2 style="margin-top:0; color: var(--green);">Steamed Milk Banana</h2>
@@ -318,10 +358,58 @@
       <div class="container">
         <h2 class="reveal" style="margin-top:0;">From Our Kitchen</h2>
         <div class="gallery">
-          <figure class="reveal"><img src="/images/shot-1.png" alt="WeNB banana being steamed" loading="lazy"></figure>
-          <figure class="reveal"><img src="/images/shot-2.jpeg" alt="Milk being added to banana" loading="lazy"></figure>
-          <figure class="reveal"><img src="/images/shot-3.jpeg" alt="Ready-to-serve plate" loading="lazy"></figure>
-          <figure class="reveal"><img src="/images/shot-4.png" alt="Students sharing WeNB" loading="lazy"></figure>
+          <figure class="reveal">
+            <picture>
+              <source type="image/webp"
+                      srcset="/images/shot-1-320.webp 320w,
+                              /images/shot-1-480.webp 480w"
+                      sizes="(max-width: 980px) 45vw, 25vw">
+              <img src="/images/shot-1.png"
+                  width="480" height="480"
+                  alt="Burmese steamed banana being gently steamed with milk"
+                  loading="lazy" decoding="async"
+                  style="width:100%;height:100%;object-fit:cover;">
+            </picture>
+          </figure>
+          <figure class="reveal">
+            <picture>
+              <source type="image/webp"
+                      srcset="/images/shot-2-320.webp 320w,
+                              /images/shot-2-480.webp 480w"
+                      sizes="(max-width: 980px) 45vw, 25vw">
+              <img src="/images/shot-2.jpeg"
+                  width="480" height="480"
+                  alt="Milk being added to banana for a warm Burmese dessert"
+                  loading="lazy" decoding="async"
+                  style="width:100%;height:100%;object-fit:cover;">
+            </picture>
+          </figure>
+          <figure class="reveal">
+            <picture>
+              <source type="image/webp"
+                      srcset="/images/shot-3-320.webp 320w,
+                              /images/shot-3-480.webp 480w"
+                      sizes="(max-width: 980px) 45vw, 25vw">
+              <img src="/images/shot-3.jpeg"
+                  width="480" height="480"
+                  alt="Ready-to-serve steamed milk banana on a minimal plate"
+                  loading="lazy" decoding="async"
+                  style="width:100%;height:100%;object-fit:cover;">
+            </picture>
+          </figure>
+          <figure class="reveal">
+            <picture>
+              <source type="image/webp"
+                      srcset="/images/shot-4-320.webp 320w,
+                              /images/shot-4-480.webp 480w"
+                      sizes="(max-width: 980px) 45vw, 25vw">
+              <img src="/images/shot-4.png"
+                  width="480" height="480"
+                  alt="Students sharing WeNB steamed milk banana in Bangkok"
+                  loading="lazy" decoding="async"
+                  style="width:100%;height:100%;object-fit:cover;">
+            </picture>
+          </figure>
         </div>
       </div>
     </section>
