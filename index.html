@@ -69,27 +69,80 @@
     .nav-links a { padding:.4rem .8rem; border-radius:.65rem; }
     .nav-links a:hover { background:#00000008; }
 
-    /* Menu button with icon toggle */
+    /* Hide desktop links on mobile */
+    @media (max-width: 860px) {
+      .nav-links { display:none; }
+    }
+
+    /* Off-canvas Root (covers viewport) */
+    .offcanvas {
+        position: fixed;
+        inset: 0;
+        display: block;
+        pointer-events: none; /* disabled until open */
+        z-index: 1050; /* Stacking context above header */
+    }
+
+    /* Scrim */
+    .offcanvas__overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        opacity: 0;
+        transition: opacity .25s ease;
+    }
+
+    /* Panel */
+    .offcanvas__panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: min(82vw, 360px);
+        background: color-mix(in oklab, var(--cream) 92%, white 8%);
+        color: var(--text);
+        transform: translateX(100%);
+        transition: transform .3s ease;
+        z-index: 1060;
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(10px) saturate(180%);
+        box-shadow: -4px 0 16px rgba(0,0,0,.1);
+    }
+
+    /* Header + Close */
+    .offcanvas__header { display: flex; justify-content: flex-end; padding: 16px; }
+    .offcanvas__close { font-size: 28px; background: none; border: 0; color: inherit; cursor: pointer; }
+
+    /* Nav links */
+    .offcanvas__nav { display: flex; flex-direction: column; padding: 8px 20px 24px; gap: 10px; }
+    .offcanvas__nav a {
+        text-decoration: none;
+        padding: 12px 4px;
+        font-weight: 500;
+        color: var(--text);
+        border-radius: .6rem;
+    }
+    .offcanvas__nav a:hover, .offcanvas__nav a:focus { background: #0000000b; }
+
+    /* Menu button (hamburger -> X) */
     .menu-btn { display:none; border:0; background:transparent; padding:.5rem; border-radius:.6rem; cursor:pointer; }
     .menu-btn:focus-visible { outline:3px solid #00000022; }
     .icon-close { display:none; }
     .menu-btn.open .icon-menu { display:none; }
     .menu-btn.open .icon-close { display:inline; }
-
+    /* Show menu button on mobile */
     @media (max-width: 860px) {
       .menu-btn { display:inline-flex; }
-      .nav-links { display:none; }
     }
 
-    /* Fullscreen Mobile Menu (overlay) */
-    .mobile-menu { position: fixed; inset: 0; display:none; flex-direction:column; gap:.25rem; padding: 88px 24px 28px; background: color-mix(in oklab, var(--cream) 92%, white 8%); backdrop-filter: blur(10px) saturate(180%); z-index: 130; overflow:auto; }
-    .mobile-menu.open { display:flex; }
-    .mobile-menu a { display:block; font-size:1.15rem; padding:.95rem .85rem; border-radius:.8rem; }
-    .mobile-menu a:hover { background:#0000000b; }
-    .mobile-menu a.btn { background: var(--banana); color:#1a1a1a; }
+    /* Open state */
+    .offcanvas.is-open { pointer-events: auto; }
+    .offcanvas.is-open .offcanvas__overlay { opacity: 1; }
+    .offcanvas.is-open .offcanvas__panel { transform: translateX(0); }
 
     /* Lock body scroll when menu is open */
-    body.nav-open { overflow:hidden; }
+    .scroll-lock { overflow:hidden; }
 
     /* Hero */
     .hero { position: relative; isolation: isolate; overflow: clip; background: linear-gradient(180deg, #fffdf6 0%, var(--cream) 65%); z-index: 0; }
@@ -108,13 +161,29 @@
     }
 
     /* Sections */
-    section { padding: 3rem 0; }
-    .cards { display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; }
-    .card { background:#fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding:1.25rem; transition: transform .25s ease, box-shadow .25s ease; }
-    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-    @media (max-width: 920px) { .cards { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+        section { padding: 3rem 0; }
+        .cards { display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem; }
+        .card { background:#fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding:1.25rem; transition: transform .25s ease, box-shadow .25s ease; }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+        @media (max-width: 920px) { .cards { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
 
+        /* Fix product strip on mobile */
+        .product-strip {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+        @media (max-width: 640px) {
+            .product-strip {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .product-strip figure {
+                order: -1;
+            }
+        }
     /* Gallery */
     .gallery { display:grid; grid-template-columns: repeat(4, 1fr); gap:.6rem; }
     .gallery figure { aspect-ratio: 1; border-radius:.9rem; overflow:hidden; box-shadow: var(--shadow-sm); background: var(--gray); position: relative; }
@@ -157,7 +226,7 @@
       </nav>
 
       <!-- Mobile menu button (hamburger -> X) -->
-      <button id="menuBtn" class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <button id="menuBtn" class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenuPanel">
         <!-- Hamburger -->
         <svg class="icon-menu" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="3" y1="6" x2="21" y2="6" />
@@ -170,17 +239,9 @@
           <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       </button>
+
     </div>
   </header>
-
-  <!-- Fullscreen Mobile Menu Overlay -->
-  <nav id="mobileMenu" class="mobile-menu" aria-hidden="true" role="dialog" aria-label="Site Menu">
-    <a href="/" style="background:#00000008">Home</a>
-    <a href="/about-us/" title="About Us">Story</a>
-    <a href="/product/" title="Our Product">Product</a>
-    <a href="/contact-us/" title="Contact Us">Contact</a>
-    <a class="btn btn-accent" href="/product/">Try WeNB</a>
-  </nav>
 
   <main>
     <!-- HERO -->
@@ -221,7 +282,10 @@
     <!-- PRODUCT STRIP -->
     <section>
       <div class="container">
-        <div class="card reveal" style="display:grid; grid-template-columns: 1.1fr 1fr; gap: 1rem; align-items:center;">
+        <div class="card reveal product-strip">
+          <figure class="hero-media" style="margin:0;">
+            <img src="/images/product-closeup.png" alt="Close-up of WeNB steamed milk banana texture" loading="lazy" />
+          </figure>
           <div>
             <h2 style="margin-top:0; color: var(--green);">Steamed Milk Banana</h2>
             <p>Warm, soft banana steamed with milk—simple ingredients, slow care. A nostalgic bite for Burmese students and a new favorite for friends.</p>
@@ -235,9 +299,6 @@
               <a class="btn btn-ghost" href="/contact-us/">Contact Us</a>
             </div>
           </div>
-          <figure class="hero-media" style="margin:0;">
-            <img src="/images/product-closeup.png" alt="Close-up of WeNB steamed milk banana texture" loading="lazy" />
-          </figure>
         </div>
       </div>
     </section>
@@ -293,47 +354,135 @@
     </div>
   </footer>
 
+  <!-- Off-canvas Menu (mobile) -->
+  <div id="mobileMenuPanel" class="offcanvas" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="offcanvas__overlay" data-close="overlay"></div>
+    <aside class="offcanvas__panel" role="document">
+      <div class="offcanvas__header">
+        <button id="mobileMenuClose" class="offcanvas__close" aria-label="Close menu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <nav class="offcanvas__nav" aria-label="Mobile">
+        <a href="/">Home</a>
+        <a href="/about-us/" title="About Us">Story</a>
+        <a href="/product/" title="Our Product">Product</a>
+        <a href="/contact-us/" title="Contact Us">Contact</a>
+        <a class="btn btn-accent" href="/product/">Try WeNB</a>
+      </nav>
+    </aside>
+  </div>
+
+
   <script>
     // Current year
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Mobile fullscreen menu toggle
-    const body = document.body;
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-
-    function closeMenu(){
-      mobileMenu.classList.remove('open');
-      menuBtn.classList.remove('open');
-      menuBtn.setAttribute('aria-expanded','false');
-      mobileMenu.setAttribute('aria-hidden','true');
-      body.classList.remove('nav-open');
-      menuBtn.focus({preventScroll:true});
-    }
-    function openMenu(){
-      mobileMenu.classList.add('open');
-      menuBtn.classList.add('open');
-      menuBtn.setAttribute('aria-expanded','true');
-      mobileMenu.setAttribute('aria-hidden','false');
-      body.classList.add('nav-open');
-    }
-
-    menuBtn.addEventListener('click',()=>{
-      const isOpen = mobileMenu.classList.contains('open');
-      isOpen ? closeMenu() : openMenu();
-    });
-
-    // Close when a link is clicked
-    mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
-
-    // Close on Escape or backdrop click area (none; header stays visible intentionally)
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeMenu(); });
 
     // Reveal on scroll
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
     }, { threshold: 0.15 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+
+    // Off-canvas mobile menu
+    (() => {
+        const html = document.documentElement;
+        const btn = document.getElementById('menuBtn');
+        const panelRoot = document.getElementById('mobileMenuPanel');
+        const panel = panelRoot.querySelector('.offcanvas__panel');
+        const closeBtn = panel.querySelector('.offcanvas__close');
+        const overlay = panelRoot.querySelector('.offcanvas__overlay');
+
+        const focusableSel = [
+            'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+            'select:not([disabled])', 'textarea:not([disabled])',
+            '[tabindex]:not([tabindex="-1"])'
+        ].join(',');
+
+        let lastFocus = null;
+
+        function openPanel() {
+            lastFocus = document.activeElement;
+            panelRoot.classList.add('is-open');
+            panelRoot.setAttribute('aria-hidden', 'false');
+            btn.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+            html.classList.add('scroll-lock');
+
+            // focus first focusable in panel
+            const first = panel.querySelector(focusableSel);
+            (first || closeBtn).focus();
+
+            document.addEventListener('keydown', onKeyDown);
+            document.addEventListener('focus', keepFocus, true);
+        }
+
+        function closePanel() {
+            panelRoot.classList.remove('is-open');
+            panelRoot.setAttribute('aria-hidden', 'true');
+            btn.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+            html.classList.remove('scroll-lock');
+
+            document.removeEventListener('keydown', onKeyDown);
+            document.removeEventListener('focus', keepFocus, true);
+
+            // return focus to trigger
+            if (lastFocus) lastFocus.focus();
+        }
+
+        function onKeyDown(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closePanel();
+            }
+            if (e.key === 'Tab') trapTab(e);
+        }
+
+        function trapTab(e) {
+            const focusables = panel.querySelectorAll(focusableSel);
+            if (!focusables.length) return;
+
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+
+        function keepFocus(e) {
+            if (!panelRoot.classList.contains('is-open')) return;
+            if (!panelRoot.contains(e.target)) {
+                // Redirect stray focus back into the panel
+                const first = panel.querySelector(focusableSel);
+                (first || closeBtn).focus();
+            }
+        }
+
+        // Click wiring
+        btn.addEventListener('click', openPanel);
+        closeBtn.addEventListener('click', closePanel);
+        overlay.addEventListener('click', closePanel);
+        
+        // Close when a link inside the panel is clicked
+        panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', closePanel));
+
+
+        // Optional: auto-close if viewport grows to desktop
+        const mq = window.matchMedia('(min-width: 861px)');
+        mq.addEventListener('change', (e) => {
+            if (e.matches) closePanel();
+        });
+    })();
   </script>
 </body>
 </html>

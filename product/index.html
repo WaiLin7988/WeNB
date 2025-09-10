@@ -59,8 +59,72 @@
     .nav-links{display:flex;align-items:center;gap:1rem}
     .nav-links a{padding:.4rem .8rem;border-radius:.65rem}
     .nav-links a:hover{background:#00000008}
+    
     .menu-btn{display:none;border:0;background:transparent;cursor:pointer;padding:.5rem;border-radius:.6rem}
-    @media(max-width:820px){.menu-btn{display:inline-flex}.nav-links{display:none;position:absolute;top:64px;left:0;right:0;padding:.75rem;background:var(--cream);border-bottom:1px solid #00000010}.nav-links.open{display:grid;gap:.25rem}}
+    .icon-close { display:none; }
+    .menu-btn.open .icon-menu { display:none; }
+    .menu-btn.open .icon-close { display:inline; }
+
+    @media(max-width:820px){.menu-btn{display:inline-flex}.nav-links{display:none;}}
+
+    /* Off-canvas Root (covers viewport) */
+    .offcanvas {
+        position: fixed;
+        inset: 0;
+        display: block;
+        pointer-events: none; /* disabled until open */
+        z-index: 1050; /* Stacking context above header */
+    }
+    
+    /* Scrim */
+    .offcanvas__overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        opacity: 0;
+        transition: opacity .25s ease;
+    }
+    
+    /* Panel */
+    .offcanvas__panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: min(82vw, 360px);
+        background: color-mix(in oklab, var(--cream) 92%, white 8%);
+        color: var(--text);
+        transform: translateX(100%);
+        transition: transform .3s ease;
+        z-index: 1060;
+        display: flex;
+        flex-direction: column;
+        backdrop-filter: blur(10px) saturate(180%);
+        box-shadow: -4px 0 16px rgba(0,0,0,.1);
+    }
+    
+    /* Header + Close */
+    .offcanvas__header { display: flex; justify-content: flex-end; padding: 16px; }
+    .offcanvas__close { font-size: 28px; background: none; border: 0; color: inherit; cursor: pointer; }
+    
+    /* Nav links */
+    .offcanvas__nav { display: flex; flex-direction: column; padding: 8px 20px 24px; gap: 10px; }
+    .offcanvas__nav a {
+        text-decoration: none;
+        padding: 12px 4px;
+        font-weight: 500;
+        color: var(--text);
+        border-radius: .6rem;
+    }
+    .offcanvas__nav a:hover, .offcanvas__nav a:focus { background: #0000000b; }
+    
+    /* Open state */
+    .offcanvas.is-open { pointer-events: auto; }
+    .offcanvas.is-open .offcanvas__overlay { opacity: 1; }
+    .offcanvas.is-open .offcanvas__panel { transform: translateX(0); }
+    
+    /* Lock body scroll when menu is open */
+    .scroll-lock { overflow:hidden; }
 
     footer{background:#fff;border-top:1px solid #00000010;margin-top:2rem}
     .footer-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:1.5rem;padding:2rem 0}
@@ -81,7 +145,11 @@
     .step{background:#fff;border:1px solid #00000014;border-radius:var(--radius-xl);padding:1.2rem 1.25rem;box-shadow:var(--shadow-xs);transform-origin:top left;opacity:.65;transform:scale(.985);transition:opacity .35s ease, transform .35s ease}
     .step.active{opacity:1;transform:scale(1)}
     .step h3{margin:.2rem 0;color:var(--green)}
-    @media(max-width:980px){.scrolly-grid{grid-template-columns:1fr}.sticky-visual{order:-1}}
+    @media(max-width:980px){
+      .scrolly-grid{grid-template-columns:1fr}
+      .sticky-visual{order:-1; position: static;} /* Removed position: sticky and made it static */
+      .sticky-visual img{height: auto;} /* Let the image height be natural on mobile */
+    }
 
     /* Ingredients strip */
     .ingredients{background:linear-gradient(180deg,var(--gray),#fff);padding:3rem 0;border-block:1px solid #00000010}
@@ -128,8 +196,12 @@
   <header>
     <div class="container nav" role="navigation" aria-label="Main Navigation">
       <a href="/" class="brand" aria-label="WeNB Home"><img class="logo" src="/images/logo.svg" alt="WeNB logo" /></a>
-      <button class="menu-btn" aria-label="Toggle Menu" aria-expanded="false" id="menuBtn">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+      <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenuPanel" id="menuBtn">
+        <svg class="icon-menu" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+        <svg class="icon-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
       </button>
       <nav class="nav-links" id="navLinks">
         <a href="/">Home</a>
@@ -140,13 +212,34 @@
       </nav>
     </div>
   </header>
+  
+  <!-- Off-canvas Menu (mobile) -->
+  <div id="mobileMenuPanel" class="offcanvas" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="offcanvas__overlay" data-close="overlay"></div>
+    <aside class="offcanvas__panel" role="document">
+      <div class="offcanvas__header">
+        <button id="mobileMenuClose" class="offcanvas__close" aria-label="Close menu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+      <nav class="offcanvas__nav" aria-label="Mobile">
+        <a href="/">Home</a>
+        <a href="/about-us/">Story</a>
+        <a href="/product/">Product</a>
+        <a href="/contact-us/">Contact</a>
+        <a class="btn btn-accent" href="/contact-us/">Try WeNB</a>
+      </nav>
+    </aside>
+  </div>
+
 
   <!-- Sticky popup CTA (added) -->
   <div class="sticky-cta" id="stickyBar" style="opacity:0;transform:translateY(10px);transition:all .4s ease">
     <div class="bar">
-      <span class="chip chip-yellow" aria-hidden="true">WeNB</span>
       <span style="font-weight:700">Steamed Milk Banana</span>
-      <a class="btn btn-primary" href="#enjoy">How to Enjoy</a>
       <a class="btn btn-accent" href="/contact-us/">Contact to Try</a>
     </div>
   </div>
@@ -161,8 +254,7 @@
           Minimal ingredients. Maximum comfort. Crafted by students in Bangkok to bring a warm bite of home — and invite friends to discover Burmese culture.
         </p>
         <div class="reveal" style="margin-top:1.1rem;display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap">
-          <a class="btn btn-primary" href="#features">Explore</a>
-          <a class="btn btn-ghost" href="/about-us/">Read the Story</a>
+          <a class="btn btn-primary" href="/about-us/">Read the Story</a>
         </div>
       </div>
     </section>
@@ -229,14 +321,6 @@
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile nav toggle (same)
-    const menuBtn = document.getElementById('menuBtn');
-    const navLinks = document.getElementById('navLinks');
-    menuBtn?.addEventListener('click', () => {
-      const open = navLinks.classList.toggle('open');
-      menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-
     // Reveal on scroll
     const io = new IntersectionObserver(entries=>{
       entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}})
@@ -260,6 +344,102 @@
       }
     };
     window.addEventListener('scroll', onScroll, { passive:true });
+
+    // Off-canvas mobile menu
+    (() => {
+        const html = document.documentElement;
+        const btn = document.getElementById('menuBtn');
+        const panelRoot = document.getElementById('mobileMenuPanel');
+        const panel = panelRoot.querySelector('.offcanvas__panel');
+        const closeBtn = panel.querySelector('.offcanvas__close');
+        const overlay = panelRoot.querySelector('.offcanvas__overlay');
+
+        const focusableSel = [
+            'a[href]', 'button:not([disabled])', 'input:not([disabled])',
+            'select:not([disabled])', 'textarea:not([disabled])',
+            '[tabindex]:not([tabindex="-1"])'
+        ].join(',');
+
+        let lastFocus = null;
+
+        function openPanel() {
+            lastFocus = document.activeElement;
+            panelRoot.classList.add('is-open');
+            panelRoot.setAttribute('aria-hidden', 'false');
+            btn.classList.add('open');
+            btn.setAttribute('aria-expanded', 'true');
+            html.classList.add('scroll-lock');
+
+            // focus first focusable in panel
+            const first = panel.querySelector(focusableSel);
+            (first || closeBtn).focus();
+
+            document.addEventListener('keydown', onKeyDown);
+            document.addEventListener('focus', keepFocus, true);
+        }
+
+        function closePanel() {
+            panelRoot.classList.remove('is-open');
+            panelRoot.setAttribute('aria-hidden', 'true');
+            btn.classList.remove('open');
+            btn.setAttribute('aria-expanded', 'false');
+            html.classList.remove('scroll-lock');
+
+            document.removeEventListener('keydown', onKeyDown);
+            document.removeEventListener('focus', keepFocus, true);
+
+            // return focus to trigger
+            if (lastFocus) lastFocus.focus();
+        }
+
+        function onKeyDown(e) {
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closePanel();
+            }
+            if (e.key === 'Tab') trapTab(e);
+        }
+
+        function trapTab(e) {
+            const focusables = panel.querySelectorAll(focusableSel);
+            if (!focusables.length) return;
+
+            const first = focusables[0];
+            const last = focusables[focusables.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) {
+                e.preventDefault();
+                last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+                e.preventDefault();
+                first.focus();
+            }
+        }
+
+        function keepFocus(e) {
+            if (!panelRoot.classList.contains('is-open')) return;
+            if (!panelRoot.contains(e.target)) {
+                // Redirect stray focus back into the panel
+                const first = panel.querySelector(focusableSel);
+                (first || closeBtn).focus();
+            }
+        }
+
+        // Click wiring
+        btn.addEventListener('click', openPanel);
+        closeBtn.addEventListener('click', closePanel);
+        overlay.addEventListener('click', closePanel);
+        
+        // Close when a link inside the panel is clicked
+        panel.querySelectorAll('a').forEach(a=>a.addEventListener('click', closePanel));
+
+
+        // Optional: auto-close if viewport grows to desktop
+        const mq = window.matchMedia('(min-width: 861px)');
+        mq.addEventListener('change', (e) => {
+            if (e.matches) closePanel();
+        });
+    })();
   </script>
 </body>
 </html>
