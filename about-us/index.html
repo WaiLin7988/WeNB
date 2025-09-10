@@ -5,7 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Our Story — WeNB</title>
   <meta name="description" content="The journey of WeNB - from homesick students to bringing comfort and culture through authentic Burmese steamed milk banana." />
+        <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQWGCMF8G2"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
+        gtag('config', 'G-ZQWGCMF8G2');
+      </script>
   <!-- Fonts: Prata (heads) + Open Sauce (body)  -->
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
@@ -268,14 +276,37 @@
       font-size: 1.5rem;
       background: var(--cream);
     }
+    /* Default arrow for desktop */
     .arrow {
       font-size: 2rem;
       color: var(--banana);
       animation: float 2s ease-in-out infinite;
     }
+    .arrow::before {
+        content: '→';
+    }
     @keyframes float {
       0%, 100% { transform: translateX(0); }
       50% { transform: translateX(5px); }
+    }
+    /* Mobile-specific arrow fix */
+    @media (max-width: 560px) {
+      .map-visual {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      .arrow {
+        transform: rotate(0);
+        animation: float-vertical 2s ease-in-out infinite;
+      }
+      .arrow::before {
+        content: '↓';
+      }
+    }
+    @keyframes float-vertical {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(5px); }
     }
 
     /* Testimonials */
@@ -475,7 +506,7 @@
               <p style="margin: 0; font-size: .85rem; opacity: .8;">Home & Heritage</p>
             </div>
             
-            <div class="arrow">→</div>
+            <div class="arrow"></div>
             
             <div class="location bangkok">
               <div class="location-icon">🎓</div>
