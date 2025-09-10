@@ -31,8 +31,10 @@
   }
   </script>
   <!-- Fonts: Prata (heads) + Open Sauce (body)  -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet">
+  <link rel="preload" as="font" href="/fonts/prata-400.woff2" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="/fonts/opensauce-400.woff2" type="font/woff2" crossorigin>
+<link rel="preload" as="font" href="/fonts/opensauce-600.woff2" type="font/woff2" crossorigin>
+
   <!-- Open Sauce via Fontshare (fallbacks provided) -->
   <link href="https://api.fontshare.com/v2/css?f[]=open-sauce@300,400,500,600,700&display=swap" rel="stylesheet">
 
@@ -57,6 +59,30 @@
       --shadow-lg: 0 14px 36px rgba(0,0,0,.14);
       --content-max: 1100px;
     }
+
+    /* Self-hosted fonts */
+@font-face {
+  font-family: "Prata";
+  src: url("/fonts/prata-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Open Sauce";
+  src: url("/fonts/opensauce-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Open Sauce";
+  src: url("/fonts/opensauce-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 
     /* Reset & Base */
     *, *::before, *::after { box-sizing: border-box; }
